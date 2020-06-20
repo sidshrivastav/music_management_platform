@@ -29,6 +29,19 @@ def index():
     return render_template('music/index.html', songs=songs)
 
 
+@bp.route('/delete', methods=['POST'])
+@login_required
+def delete():
+    if request.method == 'POST':
+        db = get_db()
+        sql = 'DELETE FROM song WHERE id={} and user={}'.format(request.form['id'], g.user['id'])
+        db.execute(
+            sql
+        )
+        db.commit()
+    return redirect(url_for('music.index'))
+
+
 @bp.route('/upload', methods=('GET', 'POST'))
 @login_required
 def upload():

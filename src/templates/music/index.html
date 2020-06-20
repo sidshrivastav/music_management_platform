@@ -13,7 +13,7 @@
     <article class="songs">
       <header>
         <div>
-          <h1>{{ song['title'] }}</h1>
+          <h1>{{ song['id'] }}</h1>
         </div>
       </header>
       <p class="body">{{ song }}</p>
@@ -21,5 +21,9 @@
     {% if not loop.last %}
       <hr>
     {% endif %}
+    <form action="{{ url_for('music.delete') }}" method=post class=delete-song>
+        <input type=hidden value="{{ song.id }}" name="id" />
+        <input type=submit value="delete" />
+      </form>
   {% endfor %}
 {% endblock %}
