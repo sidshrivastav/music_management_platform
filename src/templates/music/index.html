@@ -9,6 +9,7 @@
 
 {% block content %}
   {% for song in songs %}
+  <audio controls="controls" autoplay="autoplay" src="{{ url_for('static', filename='music/file_example_MP3_700KB.mp3') }}"></audio>
     <article class="songs">
       <header>
         <div>
