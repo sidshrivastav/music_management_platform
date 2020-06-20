@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Music{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post" enctype=multipart/form-data>
+    <label for="title">Title</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <label for="artist">Artist</label>
+    <input name="artist" id="artist" value="{{ request.form['artist'] }}" required>
+    <label for="album">Album</label>
+    <input name="album" id="album" value="{{ request.form['album'] }}" required>
+    <input type=file name=file>
+    <input type="submit" value="Upload">
+  </form>
+{% endblock %}
