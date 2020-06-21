@@ -15,7 +15,6 @@ Install packages.
 Running the application
 -----------------------
 
-::
 
     $ flask init-db
     $ flask run
