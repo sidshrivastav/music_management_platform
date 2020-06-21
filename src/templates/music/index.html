@@ -1,15 +1,9 @@
 {% extends 'base.html' %}
 
-{% block header %}
-  <h1>{% block title %}Posts{% endblock %}</h1>
-  {% if g.user %}
-    <a class="action" href="{{ url_for('music.upload') }}">New</a>
-  {% endif %}
-{% endblock %}
-
 {% block content %}
 <div class="container">
-    <div class="row">
+    <h1 class="display-4 text-center" style="margin-top: 10%;">{% block title %}Home{% endblock %}</h1>
+    <div class="row" style="margin-top: 10%;">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
             <form action="{{ url_for('music.search') }}" method="GET" class="search-song">
@@ -29,6 +23,7 @@
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
+            {% if songs|length > 0 %}
             <table class="table">
                 <thead class="thead-dark">
                   <tr>
@@ -52,8 +47,26 @@
                 {% endfor %}
                 </tbody>
               </table>
+              {% endif %}
         </div>
         <div class="col-sm-1"></div>
+    </div>
+    <div class="row" style="margin-top: 10%;">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-4">
+                    <a class="action btn btn-primary" href="{{ url_for('music.upload') }}" role="button">Add Song</a>
+                </div>
+                <div class="col-sm-4">
+                    <a class="action btn btn-primary" href="{{ url_for('music.list_songs') }}" role="button">All Songs</a>
+                </div>
+                <div class="col-sm-4">
+                    <a class="action btn btn-primary" href="{{ url_for('music.playlist') }}" role="button">Playlist</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4"></div>
     </div>
 </div>
 {% endblock %}

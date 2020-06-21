@@ -21,12 +21,7 @@ def allowed_file(filename):
 @bp.route('/')
 @login_required
 def index():
-    db = get_db()
-    sql = 'SELECT * FROM song WHERE user={}'.format(g.user['id'])
-    songs = db.execute(
-        sql
-    ).fetchall()
-    return render_template('music/index.html', songs=songs)
+    return render_template('music/index.html')
 
 
 @bp.route('/song', methods=['GET'])
@@ -62,6 +57,28 @@ def search():
     return render_template('music/index.html', songs=songs)
 
 
+@bp.route('/all_songs')
+@login_required
+def list_songs():
+    db = get_db()
+    sql = 'SELECT * FROM song'
+    songs = db.execute(
+        sql
+    ).fetchall()
+    return render_template('music/all_songs.html', songs=songs)
+
+
+@bp.route('/playlist')
+@login_required
+def playlist():
+    db = get_db()
+    sql = 'SELECT * FROM song WHERE user={}'.format(g.user['id'])
+    songs = db.execute(
+        sql
+    ).fetchall()
+    return render_template('music/playlist.html', songs=songs)
+
+
 @bp.route('/delete', methods=['POST'])
 @login_required
 def delete():
@@ -72,7 +89,7 @@ def delete():
             sql
         )
         db.commit()
-    return redirect(url_for('music.index'))
+    return redirect(url_for('music.playlist'))
 
 
 @bp.route('/<song>')
