@@ -29,6 +29,25 @@ def index():
     return render_template('music/index.html', songs=songs)
 
 
+@bp.route('/search')
+@login_required
+def search():
+    keyword = '{}%'.format(request.args.get('keyword'))
+    search_type = request.args.get('search_type')
+    db = get_db()
+    sql = 'SELECT * FROM song'
+    if search_type == 'title':
+        sql += ' WHERE title like \'{}\''.format(keyword)
+    elif search_type == 'album':
+        sql += ' WHERE album like \'{}\''.format(keyword)
+    elif search_type == 'artist':
+        sql += ' WHERE artist like \'{}\''.format(keyword)
+    songs = db.execute(
+        sql
+    ).fetchall()
+    return render_template('music/index.html', songs=songs)
+
+
 @bp.route('/delete', methods=['POST'])
 @login_required
 def delete():

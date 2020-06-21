@@ -8,8 +8,17 @@
 {% endblock %}
 
 {% block content %}
+<form action="{{ url_for('music.search') }}" method="GET" class="search-song">
+    Search songs via:<br />
+    <input name="search_type" type="radio" value="title"> Title<br />
+    <input name="search_type" type="radio" value="artist"> Artist<br />
+    <input name="search_type" type="radio" value="album"> Album<br />
+    For:
+    <input type="text" name="keyword">
+    <input type="submit" name="search" value="Search">
+</form>
   {% for song in songs %}
-  <audio controls="controls" autoplay="autoplay" src="{{ url_for('static', filename='music/file_example_MP3_700KB.mp3') }}"></audio>
+  <audio controls="controls" src="{{ url_for('static', filename='music/file_example_MP3_700KB.mp3') }}"></audio>
     <article class="songs">
       <header>
         <div>
