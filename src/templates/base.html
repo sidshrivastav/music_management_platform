@@ -25,7 +25,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         {% if g.user %}
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('music.index') }}">{{ g.user['username'] }}</a> </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('music.playlist') }}">{{ g.user['username'] }}</a> </li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a> </li>{% else %}
     
         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>

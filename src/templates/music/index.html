@@ -31,15 +31,17 @@
                     <th scope="col">Title</th>
                     <th scope="col">Artist</th>
                     <th scope="col">Album</th>
+                    <th scope="col">Url</th>
                   </tr>
                 </thead>
                 <tbody>
                 {% for song in songs %}
-                  <tr>
+                  <tr class='table-row' data-href="{{ url_for('music.song', id=song['id']) }}">
                     <th scope="row">{{ song['id'] }}</th>
                     <td>{{ song['title'] }}</td>
                     <td>{{ song['artist'] }}</td>
                     <td>{{ song['album'] }}</td>
+                    <td>{{ request.url_root }}{{ song['url'] }}</td>
                   </tr>
                   {% if not loop.last %}
                     <hr>
@@ -69,4 +71,11 @@
         <div class="col-sm-4"></div>
     </div>
 </div>
+<script>
+    $(document).ready(function($) {
+    $(".table-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});
+</script>
 {% endblock %}

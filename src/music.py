@@ -2,7 +2,7 @@ import os
 import uuid
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for, send_from_directory
+    Blueprint, flash, g, redirect, render_template, request, url_for, send_from_directory, send_file
 )
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import abort
@@ -28,6 +28,8 @@ def index():
 @login_required
 def song():
     song_id = request.args.get('id')
+    if song_id == None:
+        return render_template('error/404.html'), 404
     db = get_db()
     sql = 'SELECT * FROM song WHERE id={}'.format(song_id)
     song = db.execute(
@@ -41,8 +43,8 @@ def song():
 @bp.route('/search')
 @login_required
 def search():
-    keyword = '{}%'.format(request.args.get('keyword'))
-    search_type = request.args.get('search_type')
+    keyword = '{}%'.format(request.args.get('keyword', ''))
+    search_type = request.args.get('search_type', '')
     db = get_db()
     sql = 'SELECT * FROM song'
     if search_type == 'title':
@@ -142,3 +144,18 @@ def upload():
             return redirect(url_for('music.index'))
 
     return render_template('music/upload.html')
+
+
+@bp.route('/download', methods=('GET',))
+def download():
+    song_id = request.args.get('id')
+    if song_id == None:
+        return render_template('error/404.html'), 404
+    db = get_db()
+    sql = 'SELECT url FROM song WHERE id={}'.format(song_id)
+    song = db.execute(
+        sql
+    ).fetchone()
+    if song == None:
+        return render_template('error/404.html'), 404
+    return send_file(current_app.static_folder+'/music/{}'.format(song['url']), as_attachment=True)

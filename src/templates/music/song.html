@@ -26,6 +26,7 @@
               controls="controls"
               src="{{ url_for('music.get_song', song=song['url']) }}"
             ></audio>
+            <a class="action btn btn-primary mx-auto" href="{{ url_for('music.download', id=song['id']) }}" role="button">Download</a>
           </div>
         </div>
         <div class="col-sm-4"></div>

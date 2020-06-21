@@ -14,16 +14,18 @@
                     <th scope="col">Title</th>
                     <th scope="col">Artist</th>
                     <th scope="col">Album</th>
+                    <th scope="col">Url</th>
                     <th scope="col">Delete</th>
                   </tr>
                 </thead>
                 <tbody>
                 {% for song in songs %}
-                  <tr>
+                  <tr class='table-row' data-href="{{ url_for('music.song', id=song['id']) }}">
                     <th scope="row">{{ song['id'] }}</th>
                     <td>{{ song['title'] }}</td>
                     <td>{{ song['artist'] }}</td>
                     <td>{{ song['album'] }}</td>
+                    <td>{{ request.url_root }}{{ song['url'] }}</td>
                     <td>
                         <form action="{{ url_for('music.delete') }}" method=post class=delete-song>
                             <input type=hidden value="{{ song.id }}" name="id" />
@@ -42,4 +44,11 @@
         <div class="col-sm-1"></div>
     </div>
 </div>
+<script>
+    $(document).ready(function($) {
+    $(".table-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});
+</script>
 {% endblock %}
