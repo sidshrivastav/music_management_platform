@@ -11,6 +11,9 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
+    """
+        Add new user.
+    """
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -41,6 +44,9 @@ def register():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    """
+        User Login.
+    """
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -67,6 +73,9 @@ def login():
 
 @bp.before_app_request
 def load_logged_in_user():
+    """
+        Generate user session.
+    """
     user_id = session.get('user_id')
 
     if user_id is None:
@@ -79,11 +88,17 @@ def load_logged_in_user():
 
 @bp.route('/logout')
 def logout():
+    """
+        User Logout.
+    """
     session.clear()
     return redirect(url_for('index'))
 
 
 def login_required(view):
+    """
+        Check user session.
+    """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:

@@ -14,6 +14,9 @@ bp = Blueprint('music', __name__)
 
 
 def allowed_file(filename):
+    """
+        Check if file to be uploaded is of mp3 extension.
+    """
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
@@ -21,12 +24,18 @@ def allowed_file(filename):
 @bp.route('/')
 @login_required
 def index():
+    """
+        Home Page
+    """
     return render_template('music/index.html')
 
 
 @bp.route('/song/<id>', methods=['GET'])
 @login_required
 def song(id):
+    """
+        Get song details.
+    """
     song_id = id
     if song_id == None:
         return render_template('error/404.html'), 404
@@ -43,6 +52,9 @@ def song(id):
 @bp.route('/search')
 @login_required
 def search():
+    """
+        Search songs via title/artist/album.
+    """
     keyword = '{}%'.format(request.args.get('keyword', ''))
     search_type = request.args.get('search_type', '')
     db = get_db()
@@ -62,6 +74,9 @@ def search():
 @bp.route('/all_songs')
 @login_required
 def list_songs():
+    """
+        List all songs from database.
+    """
     db = get_db()
     sql = 'SELECT * FROM song'
     songs = db.execute(
@@ -73,6 +88,9 @@ def list_songs():
 @bp.route('/playlist')
 @login_required
 def playlist():
+    """
+        List user uploaded songs from database.
+    """
     db = get_db()
     sql = 'SELECT * FROM song WHERE user={}'.format(g.user['id'])
     songs = db.execute(
@@ -84,6 +102,9 @@ def playlist():
 @bp.route('/delete', methods=['POST'])
 @login_required
 def delete():
+    """
+        Delete song from database via id
+    """
     if request.method == 'POST':
         db = get_db()
         sql = 'DELETE FROM song WHERE id={} and user={}'.format(request.form['id'], g.user['id'])
@@ -97,12 +118,18 @@ def delete():
 @bp.route('/<song>')
 @login_required
 def get_song(song):
+    """
+        Mask the static url for uploded songs.
+    """
     return send_from_directory(current_app.static_folder, 'music/{}'.format(song))
 
 
 @bp.route('/upload', methods=('GET', 'POST'))
 @login_required
 def upload():
+    """
+        Upload song and relevant details.
+    """
     if request.method == 'POST':
         title = request.form['title']
         artist = request.form['artist']
@@ -148,6 +175,9 @@ def upload():
 
 @bp.route('/download', methods=('GET',))
 def download():
+    """
+        Dowload song via id.
+    """
     song_id = request.args.get('id')
     if song_id == None:
         return render_template('error/404.html'), 404
