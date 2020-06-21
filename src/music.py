@@ -2,7 +2,7 @@ import os
 import uuid
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, send_from_directory
 )
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import abort
@@ -27,6 +27,20 @@ def index():
         sql
     ).fetchall()
     return render_template('music/index.html', songs=songs)
+
+
+@bp.route('/song', methods=['GET'])
+@login_required
+def song():
+    song_id = request.args.get('id')
+    db = get_db()
+    sql = 'SELECT * FROM song WHERE id={}'.format(song_id)
+    song = db.execute(
+        sql
+    ).fetchone()
+    if song == None:
+        return render_template('error/404.html'), 404
+    return render_template('music/song.html', song=song)
 
 
 @bp.route('/search')
@@ -59,6 +73,12 @@ def delete():
         )
         db.commit()
     return redirect(url_for('music.index'))
+
+
+@bp.route('/<song>')
+@login_required
+def get_song(song):
+    return send_from_directory(current_app.static_folder, 'music/{}'.format(song))
 
 
 @bp.route('/upload', methods=('GET', 'POST'))
