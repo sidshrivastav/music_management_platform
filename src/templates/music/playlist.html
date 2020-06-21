@@ -25,7 +25,7 @@
                     <td>{{ song['title'] }}</td>
                     <td>{{ song['artist'] }}</td>
                     <td>{{ song['album'] }}</td>
-                    <td>{{ request.url_root }}{{ song['url'] }}</td>
+                    <td>{{ request.url_root }}song/{{ song['id'] }}</td>
                     <td>
                         <form action="{{ url_for('music.delete') }}" method=post class=delete-song>
                             <input type=hidden value="{{ song.id }}" name="id" />

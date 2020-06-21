@@ -24,10 +24,10 @@ def index():
     return render_template('music/index.html')
 
 
-@bp.route('/song', methods=['GET'])
+@bp.route('/song/<id>', methods=['GET'])
 @login_required
-def song():
-    song_id = request.args.get('id')
+def song(id):
+    song_id = id
     if song_id == None:
         return render_template('error/404.html'), 404
     db = get_db()

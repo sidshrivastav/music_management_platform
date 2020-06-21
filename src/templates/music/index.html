@@ -41,7 +41,7 @@
                     <td>{{ song['title'] }}</td>
                     <td>{{ song['artist'] }}</td>
                     <td>{{ song['album'] }}</td>
-                    <td>{{ request.url_root }}{{ song['url'] }}</td>
+                    <td>{{ request.url_root }}song/{{ song['id'] }}</td>
                   </tr>
                   {% if not loop.last %}
                     <hr>
